@@ -7,6 +7,6 @@ export default defineConfig({
 }) */
 
 export default defineConfig({
-  base: '/myDevProfile/',   // <-- add your repo name here
+  base: '/',   // <-- add your repo name here
   plugins: [react()]
 })

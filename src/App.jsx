@@ -1,237 +1,365 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 
 // Skills with icons
 const skills = [
-  { name: "Java", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg" },
-  { name: "Spring Boot", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/spring/spring-original.svg" },
-  { name: "Maven", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/apache/apache-original.svg" },
-  { name: "REST APIs", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" },
-  { name: "MySQL", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" },
-  { name: "NoSQL", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg" },
-  { name: "Cassandra", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cassandra/cassandra-original.svg" },
-  { name: "Kafka", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/apachekafka/apachekafka-original.svg" },
-  { name: "Git", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" },
-  { name: "GitLab", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/gitlab/gitlab-original.svg" },
-  { name: "Docker", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" },
-  { name: "Kubernetes", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kubernetes/kubernetes-plain.svg" },
-  { name: "AWS", icon: "https://cdn.jsdelivr.net/npm/simple-icons@v6/icons/amazonaws.svg" },
-  { name: "Jenkins", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jenkins/jenkins-original.svg" },
-  { name: "Jira", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jira/jira-original.svg" },
+  { name: "Java", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg", level: 95 },
+  { name: "Spring Boot", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/spring/spring-original.svg", level: 90 },
+  { name: "Maven", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/apache/apache-original.svg", level: 85 },
+  { name: "REST APIs", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg", level: 90 },
+  { name: "MySQL", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg", level: 85 },
+  { name: "NoSQL", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg", level: 80 },
+  { name: "Cassandra", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cassandra/cassandra-original.svg", level: 75 },
+  { name: "Kafka", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/apachekafka/apachekafka-original.svg", level: 85 },
+  { name: "Git", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg", level: 90 },
+  { name: "GitLab", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/gitlab/gitlab-original.svg", level: 80 },
+  { name: "Docker", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg", level: 85 },
+  { name: "Kubernetes", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kubernetes/kubernetes-plain.svg", level: 75 },
+  { name: "AWS", icon: "https://cdn.jsdelivr.net/npm/simple-icons@v6/icons/amazonaws.svg", level: 80 },
+  { name: "Jenkins", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jenkins/jenkins-original.svg", level: 85 },
+  { name: "Jira", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jira/jira-original.svg", level: 90 },
 ];
 
-const highlights = [
-  {
-    title: "Agile Collaboration",
-    desc: "Actively participated in Agile ceremonies, contributing to sprint planning and retrospectives, improving team productivity and project delivery timelines by 20%.",
+const services = [
+   {
+    title: "UI Development",
+    description: "Creating attractive and responsive user interfaces with modern web technologies",
+    icon: "🎨",
+    features: ["Responsive Design", "React Applications", "Modern CSS", "Interactive Components"]
   },
   {
-    title: "Code Quality Improvement",
-    desc: "Hands-on experience using CodeRabbit AI code reviewer to enforce coding standards and best practices, reducing bugs and enhancing maintainability.",
+    title: "Backend Development",
+    description: "Building robust and scalable server-side applications using Java and Spring Boot",
+    icon: "🚀",
+    features: ["RESTful APIs", "Microservices", "Database Design", "Performance Optimization"]
   },
   {
-    title: "RESTful API Development",
-    desc: "Designed and developed RESTful APIs that improved data accessibility for third-party integrations, expanding and facilitating seamless data exchange.",
+    title: "API Integration",
+    description: "Seamless integration with third-party APIs and services for enhanced functionality",
+    icon: "🔗",
+    features: ["OAuth Integration", "Payment Gateways", "Data Synchronization", "Real-time Processing"]
   },
   {
-    title: "Real-Time Data Processing",
-    desc: "Contributed to the development of a real-time processing system with Java and Apache Kafka, enabling instant analytics and business insights.",
+    title: "DevOps & Deployment",
+    description: "Streamlined deployment processes using containerization and CI/CD pipelines",
+    icon: "⚡",
+    features: ["Docker Containers", "Kubernetes Orchestration", "Jenkins CI/CD", "AWS Deployment"]
   },
   {
-    title: "Data Migration",
-    desc: "Successfully executed a large-scale data migration project, ensuring data integrity and minimal downtime during the transition from legacy systems.",
+    title: "Database Solutions",
+    description: "Designing and optimizing database architectures for high-performance applications",
+    icon: "💾",
+    features: ["MySQL Design", "NoSQL Solutions", "Data Migration", "Performance Tuning"]
   },
+];
+
+const projects = [
+  {
+    title: "Real-Time Analytics Platform",
+    description: "Built a real-time data processing system using Java and Apache Kafka for instant business insights",
+    tech: ["Java", "Kafka", "Spring Boot", "MySQL"],
+  },
+   {
+    title: "Data Migration Project",
+    description: "Successfully migrated legacy data systems ensuring zero downtime and data integrity",
+    tech: ["Java", "MySQL", "NoSQL", "AWS"],
+  },
+  {
+    title: "RESTful API Suite",
+    description: "Developed comprehensive API suite for third-party integrations and data exchange",
+    tech: ["Spring Boot", "REST APIs", "JWT", "Docker"],
+  }
 ];
 
 function App() {
+  const [isVisible, setIsVisible] = useState(false);
+  const [activeSection, setActiveSection] = useState('home');
+
+  useEffect(() => {
+    setIsVisible(true);
+    
+    const handleScroll = () => {
+      const sections = ['home', 'about', 'services', 'skills', 'projects', 'contact'];
+      const scrollPosition = window.scrollY + 100;
+
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const element = document.getElementById(sections[i]);
+        if (element && scrollPosition >= element.offsetTop) {
+          setActiveSection(sections[i]);
+          break;
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToSection = (sectionId) => {
+    document.getElementById(sectionId)?.scrollIntoView({ 
+      behavior: 'smooth' 
+    });
+  };
+
   return (
-    <div className="container">
-      {/* Header */}
-      <header className="header">
-        
-        <div className="header-content">
-          <div className="profile-info">
-            <h1>Ganesh Narangle</h1>
-            <h2>Full Stack Java Developer</h2>
-            <span className="experience-badge">2 Years Experience</span>
+    <>
+      {/* Navigation */}
+      <nav className="navbar">
+        <div className="nav-container">
+          <div className="nav-logo">
+          </div>
+          <div className="nav-menu">
+            {['home', 'about', 'services', 'skills', 'projects', 'contact'].map((section) => (
+              <button
+                key={section}
+                className={`nav-item ${activeSection === section ? 'active' : ''}`}
+                onClick={() => scrollToSection(section)}
+              >
+                {section.charAt(0).toUpperCase() + section.slice(1)}
+              </button>
+            ))}
           </div>
           
-          <div className="contact-quick-info">
-            <div className="contact-item-header">
-              <span className="contact-icon-header">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-              </span>
-              <span>Vishal Nagar, Wakad, Pune</span>
-            </div>
-            
-            <div className="contact-item-header">
-              <span className="contact-icon-header">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                </svg>
-              </span>
-              <span>7709761160</span>
-            </div>
-            
-            <div className="contact-item-header">
-              <span className="contact-icon-header">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
-              </span>
-              <a
-                href="mailto:ganeshnarangle@gmail.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ textDecoration: "none", color: "inherit" }}
-              >
-                <span>ganeshnarangle@gmail.com</span>
-              </a>
-            </div>
-            
-            <div className="contact-item-header">
-              <span className="contact-icon-header">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
-                </svg>
-              </span>
-              <a
-                href="https://linkedin.com/in/nganeshm"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ textDecoration: "none", color: "inherit" }}
-              >
-                <span>linkedin.com/in/nganeshm</span>
-              </a>
-            </div>
+          {/* Top Contact Info */}
+          <div className="nav-contacts">
+            <a href="mailto:ganeshnarangle@gmail.com" className="nav-contact-item" title="Email">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+              </svg>
+            </a>
+            <a href="tel:7709761160" className="nav-contact-item" title="Phone">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+              </svg>
+            </a>
+            <a href="https://linkedin.com/in/nganeshm" target="_blank" rel="noopener noreferrer" className="nav-contact-item" title="LinkedIn">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+              </svg>
+            </a>
           </div>
         </div>
-      </header>
+      </nav>
 
-      {/* About Me Section */}
-      <section className="section">
-        <h2>
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-          </svg>
-          About Me
-        </h2>
-        <p>
-          Java Developer with 2 years of experience in designing, developing, and maintaining Spring Boot applications. 
-          Expertise in crafting high-performance, scalable RESTful APIs and integrating authentication/authorization mechanisms. 
-          Strong problem-solving skills and passion for writing clean, maintainable code. Adept at quickly learning new 
-          technologies to meet evolving needs. Seeking challenging roles to further enhance enterprise-grade Spring Boot 
-          development skills while collaborating with talented teams.
-        </p>
-      </section>
-
-      {/* Skills Section */}
-      <section className="section">
-        <h2>
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-          </svg>
-          Technical Skills
-        </h2>
-        <div className="skills-grid">
-          {skills.map((skill, index) => (
-            <div key={index} className="skill-item">
-              <img src={skill.icon} alt={skill.name} className="skill-icon" />
-              <span className="skill-name">{skill.name}</span>
+      <div className="main-container">
+        {/* Hero Section - Centered Intro */}
+        <section id="home" className={`hero-section ${isVisible ? 'fade-in' : ''}`}>
+          <div className="section-container">
+            <div className="hero-content-centered">
+              <div className="hero-greeting">👋 Hello, I'm</div>
+              <h1 className="hero-name">Ganesh Narangle</h1>
+              <h2 className="hero-title">Full Stack Java Developer</h2>
+              <p className="hero-description">
+                Passionate about building scalable backend solutions with Java & Spring Boot. 
+                Transforming ideas into robust, high-performance applications.
+              </p>
+              <div className="hero-stats">
+                <div className="stat">
+                  <span className="stat-number">2+</span>
+                  <span className="stat-label">Years Experience</span>
+                </div>
+                <div className="stat">
+                  <span className="stat-number">15+</span>
+                  <span className="stat-label">Technologies</span>
+                </div>
+              </div>
             </div>
-          ))}
-        </div>
-      </section>
+          </div>
+        </section>
 
-      {/* Career Highlights Section */}
-      <section className="section">
-        <h2>
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-          </svg>
-          Career Highlights
-        </h2>
-        {highlights.map((highlight, index) => (
-          <div key={index} className="highlight">
-            <p>
-              <span className="highlight-title">{highlight.title}:</span> {highlight.desc}
+        {/* About Section */}
+        <section id="about" className="about-section">
+          <div className="section-container">
+            <h2 className="section-title">About Me</h2>
+            <div className="about-content">
+              <div className="about-text">
+                <p>
+                  I'm a passionate Java Developer with 2+ years of experience in designing and developing 
+                  enterprise-grade applications. My expertise lies in building scalable backend systems 
+                  using Spring Boot, creating robust RESTful APIs, and implementing efficient database solutions.
+                </p>
+                <p>
+                  I thrive on solving complex problems and turning innovative ideas into reality. 
+                  My commitment to clean code, best practices, and continuous learning drives me 
+                  to deliver exceptional results in every project.
+                </p>
+                <div className="about-highlights">
+                  <div className="highlight-item">
+                    <span className="highlight-icon">🎯</span>
+                    <span>Problem Solver</span>
+                  </div>
+                  <div className="highlight-item">
+                    <span className="highlight-icon">⚡</span>
+                    <span>Fast Learner</span>
+                  </div>
+                  <div className="highlight-item">
+                    <span className="highlight-icon">🤝</span>
+                    <span>Team Player</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="services" className="services-section">
+          <div className="section-container">
+            <h2 className="section-title">What I Do</h2>
+            <div className="services-grid-inline">
+              {services.map((service, index) => (
+                <div key={index} className="service-card-compact">
+                  <div className="service-icon">{service.icon}</div>
+                  <h3>{service.title}</h3>
+                  <p>{service.description}</p>
+                  <ul className="service-features">
+                    {service.features.map((feature, idx) => (
+                      <li key={idx}>{feature}</li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Skills Section - 5x5 Grid Layout */}
+        <section id="skills" className="skills-section">
+          <div className="section-container-extra-wide">
+            <h2 className="section-title">Technical Skills & Expertise</h2>
+            <p className="skills-subtitle">
+              Proficient in modern technologies and frameworks for building enterprise-grade applications
             </p>
-          </div>
-        ))}
-      </section>
-
-      {/* Experience Section */}
-      <section className="section">
-        <h2>
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-          </svg>
-          Experience
-        </h2>
-        <div>
-          <div className="job-header">
-            <h3>Java Software Engineer</h3>
-            <div className="date">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-              </svg>
-              June 2023 - Present
+            <div className="skills-grid-5x5">
+              {skills.map((skill, index) => (
+                <div key={index} className="skill-card-optimized">
+                  <div className="skill-icon-wrapper-optimized">
+                    <img src={skill.icon} alt={skill.name} className="skill-icon-optimized" />
+                  </div>
+                  <div className="skill-info-optimized">
+                    <span className="skill-name-optimized">{skill.name}</span>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
-          <p className="company">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-            </svg>
-            Yagna IQ, Pune
-          </p>
-          <p>
-            YagnaiQ, Inc. is a cloud-based SaaS company providing AI-driven solutions such as Renewal Cloud, 
-            XSUS Cloud, Renewal AI Agents, Channel CPQ, and WiFi Planner. The platform connects vendors, 
-            distributors, resellers, and customers to enable secure, seamless transactions and streamline channel workflows.
-          </p>
-        </div>
-      </section>
+        </section>
 
-      {/* Education Section */}
-      <section className="section">
-        <h2>
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path d="M12 14l9-5-9-5-9 5 9 5z" />
-            <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" />
-          </svg>
-          Education
-        </h2>
-        <div>
-          <div className="edu-header">
-            <h3>B. Tech</h3>
-            <div className="date">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-              </svg>
-              2019 - 2022
+          {/* Projects Section */}
+        <section id="projects" className="projects-section">
+          <div className="section-container">
+            <h2 className="section-title">Featured Projects</h2>
+            <div className="projects-grid">
+              {projects.map((project, index) => (
+                <div key={index} className="project-card">
+                  <div className="project-header">
+                    <h3>{project.title}</h3>
+                  </div>
+                  <p className="project-description">{project.description}</p>
+                  <div className="project-tech">
+                    {project.tech.map((tech, idx) => (
+                      <span key={idx} className="tech-tag">{tech}</span>
+                    ))}
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
-          <p className="institution">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" />
-            </svg>
-            MPGI Engineering College
-          </p>
-          <p>GPA: <strong>9.1</strong></p>
-        </div>
-      </section>
+        </section>
 
-      {/* Footer */}
-      <footer className="footer">
-        <div>
-          &copy; {new Date().getFullYear()} Ganesh Narangle
-        </div>
-      </footer>
-    </div>
+        {/* Contact Section - Broad and Centered */}
+        <section id="contact" className="contact-section">
+          <div className="section-container-wide">
+            <div className="contact-content-centered">
+              <h2 className="section-title">Let's Connect & Build Something Amazing</h2>
+              <p className="contact-subtitle">
+                Ready to start your next project? I'm always interested in new opportunities and exciting challenges. 
+                Let's discuss how we can work together to bring your ideas to life!
+              </p>
+              
+              <div className="contact-methods-centered">
+                <a href="mailto:ganeshnarangle@gmail.com" className="contact-method-large">
+                  <div className="method-icon-large">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <div className="method-label">Email Me</div>
+                    <div className="method-value">ganeshnarangle@gmail.com</div>
+                  </div>
+                </a>
+                
+                <a href="tel:7709761160" className="contact-method-large">
+                  <div className="method-icon-large">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <div className="method-label">Call Me</div>
+                    <div className="method-value">+91 7709761160</div>
+                  </div>
+                </a>
+                
+                <a href="https://linkedin.com/in/nganeshm" target="_blank" rel="noopener noreferrer" className="contact-method-large">
+                  <div className="method-icon-large">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <div className="method-label">LinkedIn</div>
+                    <div className="method-value">Connect with me</div>
+                  </div>
+                </a>
+                
+                <div className="contact-method-large">
+                  <div className="method-icon-large">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <div className="method-label">Location</div>
+                    <div className="method-value">Pune, Maharashtra, India</div>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="contact-form-centered">
+                <h3>Send me a message</h3>
+                <form className="form-wide">
+                  <div className="form-row">
+                    <div className="form-group">
+                      <input type="text" placeholder="Your Name" className="form-input" />
+                    </div>
+                    <div className="form-group">
+                      <input type="email" placeholder="Your Email" className="form-input" />
+                    </div>
+                  </div>
+                  <div className="form-group">
+                    <input type="text" placeholder="Subject" className="form-input" />
+                  </div>
+                  <div className="form-group">
+                    <textarea placeholder="Your Message" className="form-textarea" rows="6"></textarea>
+                  </div>
+                  <div className="form-submit-wrapper">
+                    <button type="submit" className="btn-submit-large">Send Message</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Footer */}
+        <footer className="footer">
+          <div className="footer-content">
+            <p>&copy; {new Date().getFullYear()} Ganesh Narangle.</p>
+          </div>
+        </footer>
+      </div>
+    </>
   );
 }
 
