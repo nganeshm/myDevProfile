@@ -15,7 +15,7 @@ const skills = [
   { name: "GitLab", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/gitlab/gitlab-original.svg", level: 80 },
   { name: "Docker", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg", level: 85 },
   { name: "Kubernetes", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kubernetes/kubernetes-plain.svg", level: 75 },
-  { name: "AWS", icon: "https://cdn.jsdelivr.net/npm/simple-icons@v6/icons/amazonaws.svg", level: 80 },
+  { name: "AWS", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original-wordmark.svg", level: 80 },
   { name: "Jenkins", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jenkins/jenkins-original.svg", level: 85 },
   { name: "Jira", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jira/jira-original.svg", level: 90 },
 ];
@@ -74,13 +74,21 @@ const projects = [
 function App() {
   const [isVisible, setIsVisible] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: ''
+  });
+  const [formStatus, setFormStatus] = useState({ type: '', message: '' });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     setIsVisible(true);
     
     const handleScroll = () => {
       const sections = ['home', 'about', 'services', 'skills', 'projects', 'contact'];
-      const scrollPosition = window.scrollY + 100;
+      const scrollPosition = window.scrollY + 120;
 
       for (let i = sections.length - 1; i >= 0; i--) {
         const element = document.getElementById(sections[i]);
@@ -99,6 +107,63 @@ function App() {
     document.getElementById(sectionId)?.scrollIntoView({ 
       behavior: 'smooth' 
     });
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setFormStatus({ type: '', message: '' });
+
+    try {
+      // Map form data to match backend DTO
+      const requestData = {
+        clientName: formData.name,
+        clientEmail: formData.email,
+        clientSubject: formData.subject,
+        clientMessage: formData.message
+      };
+
+      const response = await fetch('http://35.154.163.54:8080/api/client/saveClient', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },  
+        body: JSON.stringify(requestData),
+      });
+
+      if (response.ok) {
+        setFormStatus({ 
+          type: 'success', 
+          message: 'Message sent successfully! I\'ll get back to you soon.' 
+        });
+        // Reset form
+        setFormData({
+          name: '',
+          email: '',
+          subject: '',
+          message: ''
+        });
+      } else {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || 'Failed to send message');
+      }
+    } catch (error) {
+      setFormStatus({ 
+        type: 'error', 
+        message: 'Failed to send message. Please try again or contact me directly.' 
+      });
+      console.error('Error submitting form:', error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -328,23 +393,70 @@ function App() {
               
               <div className="contact-form-centered">
                 <h3>Send me a message</h3>
-                <form className="form-wide">
+                {formStatus.message && (
+                  <div className={`form-status ${formStatus.type}`}>
+                    {formStatus.message}
+                  </div>
+                )}
+                <form className="form-wide" onSubmit={handleSubmit}>
                   <div className="form-row">
                     <div className="form-group">
-                      <input type="text" placeholder="Your Name" className="form-input" />
+                      <input 
+                        type="text" 
+                        name="name"
+                        placeholder="Your Name" 
+                        className="form-input" 
+                        value={formData.name}
+                        onChange={handleInputChange}
+                        required
+                        disabled={isSubmitting}
+                      />
                     </div>
                     <div className="form-group">
-                      <input type="email" placeholder="Your Email" className="form-input" />
+                      <input 
+                        type="email" 
+                        name="email"
+                        placeholder="Your Email" 
+                        className="form-input" 
+                        value={formData.email}
+                        onChange={handleInputChange}
+                        required
+                        disabled={isSubmitting}
+                      />
                     </div>
                   </div>
                   <div className="form-group">
-                    <input type="text" placeholder="Subject" className="form-input" />
+                    <input 
+                      type="text" 
+                      name="subject"
+                      placeholder="Subject" 
+                      className="form-input" 
+                      value={formData.subject}
+                      onChange={handleInputChange}
+                      required
+                      disabled={isSubmitting}
+                    />
                   </div>
                   <div className="form-group">
-                    <textarea placeholder="Your Message" className="form-textarea" rows="6"></textarea>
+                    <textarea 
+                      name="message"
+                      placeholder="Your Message" 
+                      className="form-textarea" 
+                      rows="6"
+                      value={formData.message}
+                      onChange={handleInputChange}
+                      required
+                      disabled={isSubmitting}
+                    ></textarea>
                   </div>
                   <div className="form-submit-wrapper">
-                    <button type="submit" className="btn-submit-large">Send Message</button>
+                    <button 
+                      type="submit" 
+                      className="btn-submit-large"
+                      disabled={isSubmitting}
+                    >
+                      {isSubmitting ? 'Sending...' : 'Send Message'}
+                    </button>
                   </div>
                 </form>
               </div>
