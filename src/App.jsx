@@ -21,12 +21,6 @@ const skills = [
 ];
 
 const services = [
-   {
-    title: "UI Development",
-    description: "Creating attractive and responsive user interfaces with modern web technologies",
-    icon: "🎨",
-    features: ["Responsive Design", "React Applications", "Modern CSS", "Interactive Components"]
-  },
   {
     title: "Backend Development",
     description: "Building robust and scalable server-side applications using Java and Spring Boot",
@@ -40,35 +34,56 @@ const services = [
     features: ["OAuth Integration", "Payment Gateways", "Data Synchronization", "Real-time Processing"]
   },
   {
+    title: "Database Solutions",
+    description: "Designing and optimizing database architectures for high-performance applications",
+    icon: "💾",
+    features: ["MySQL Design", "NoSQL Solutions", "Data Migration", "Performance Tuning"]
+  },
+    {
     title: "DevOps & Deployment",
     description: "Streamlined deployment processes using containerization and CI/CD pipelines",
     icon: "⚡",
     features: ["Docker Containers", "Kubernetes Orchestration", "Jenkins CI/CD", "AWS Deployment"]
   },
   {
-    title: "Database Solutions",
-    description: "Designing and optimizing database architectures for high-performance applications",
-    icon: "💾",
-    features: ["MySQL Design", "NoSQL Solutions", "Data Migration", "Performance Tuning"]
+    title: "AWS Cloud Service Integration",
+    description: "Integrating AWS cloud services for scalable and reliable solutions",
+    icon: "☁️",
+    features: ["Amazon S3", "Amazon SNS", "Amazon SES", "Secure Cloud Architecture"]
   },
 ];
 
 const projects = [
   {
+    title: "RESTful API Suite",
+    description: "Developed comprehensive API suite for third-party integrations and data exchange",
+    tech: ["Spring Boot", "REST APIs", "JWT", "Docker"],
+  },
+  {
+    title: "Full Stack Profile Website",
+    description: "Developed a personal portfolio website showcasing Skills set and projects",
+    tech: ["Spring Boot", "React", "MySQL(AWS RDS)", "Deployment(AWS EC2)"],
+  },
+  {
     title: "Real-Time Analytics Platform",
     description: "Built a real-time data processing system using Java and Apache Kafka for instant business insights",
     tech: ["Java", "Kafka", "Spring Boot", "MySQL"],
   },
-   {
-    title: "Data Migration Project",
-    description: "Successfully migrated legacy data systems ensuring zero downtime and data integrity",
-    tech: ["Java", "MySQL", "NoSQL", "AWS"],
+];
+
+const certifications = [
+  {
+    title: "Ai Agent Fundamentals",
+    issuer: "Databricks",
+    date: "",
+    link: "",
   },
   {
-    title: "RESTful API Suite",
-    description: "Developed comprehensive API suite for third-party integrations and data exchange",
-    tech: ["Spring Boot", "REST APIs", "JWT", "Docker"],
-  }
+    title: "GitHub Copilot in Action",
+    issuer: "KodeKloud",
+    date: "",
+    link: "",
+  },
 ];
 
 function App() {
@@ -213,7 +228,7 @@ function App() {
             <div className="hero-content-centered">
               <div className="hero-greeting">👋 Hello, I'm</div>
               <h1 className="hero-name">Ganesh Narangle</h1>
-              <h2 className="hero-title">Full Stack Java Developer</h2>
+              <h2 className="hero-title">Java Developer</h2>
               <p className="hero-description">
                 Passionate about building scalable backend solutions with Java & Spring Boot. 
                 Transforming ideas into robust, high-performance applications.
@@ -239,14 +254,10 @@ function App() {
             <div className="about-content">
               <div className="about-text">
                 <p>
-                  I'm a passionate Java Developer with 2+ years of experience in designing and developing 
-                  enterprise-grade applications. My expertise lies in building scalable backend systems 
-                  using Spring Boot, creating robust RESTful APIs, and implementing efficient database solutions.
+                  I'm a Java Developer with 3+ years of experience in backend development using Java, Spring Boot, microservices, and RESTful APIs. I specialize in building scalable, cloud-based applications leveraging AWS and cloud-native architectures.
                 </p>
                 <p>
-                  I thrive on solving complex problems and turning innovative ideas into reality. 
-                  My commitment to clean code, best practices, and continuous learning drives me 
-                  to deliver exceptional results in every project.
+                  My focus is on delivering efficient backend solutions that drive business impact and foster continuous improvement. I am committed to writing clean, maintainable code and always strive to stay updated with the latest industry best practices.
                 </p>
                 <div className="about-highlights">
                   <div className="highlight-item">
@@ -267,6 +278,7 @@ function App() {
           </div>
         </section>
 
+        {/* Services Section */}
         <section id="services" className="services-section">
           <div className="section-container">
             <h2 className="section-title">What I Do</h2>
@@ -287,7 +299,7 @@ function App() {
           </div>
         </section>
 
-        {/* Skills Section - 5x5 Grid Layout */}
+        {/* Skills Section */}
         <section id="skills" className="skills-section">
           <div className="section-container-extra-wide">
             <h2 className="section-title">Technical Skills & Expertise</h2>
@@ -309,7 +321,9 @@ function App() {
           </div>
         </section>
 
-          {/* Projects Section */}
+   
+
+        {/* Projects Section */}
         <section id="projects" className="projects-section">
           <div className="section-container">
             <h2 className="section-title">Featured Projects</h2>
@@ -331,7 +345,33 @@ function App() {
           </div>
         </section>
 
-        {/* Contact Section - Broad and Centered */}
+             {/* Certificates Section */}
+        <section id="certificates" className="certificates-section">
+          <div className="section-container">
+            <h2 className="section-title">Certifications</h2>
+            <div className="certificates-grid">
+              {certifications.map((cert, idx) => (
+                <div key={idx} className="certificate-card">
+                  <div className="certificate-title">{cert.title}</div>
+                  <div className="certificate-issuer">{cert.issuer}</div>
+                  {cert.date && <div className="certificate-date">{cert.date}</div>}
+                  {cert.link && (
+                    <a
+                      href={cert.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="certificate-link"
+                    >
+                      View Certificate
+                    </a>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Contact Section */}
         <section id="contact" className="contact-section">
           <div className="section-container-wide">
             <div className="contact-content-centered">
@@ -463,8 +503,6 @@ function App() {
             </div>
           </div>
         </section>
-
-        {/* Footer */}
         <footer className="footer">
           <div className="footer-content">
             <p>&copy; {new Date().getFullYear()} Ganesh Narangle.</p>
