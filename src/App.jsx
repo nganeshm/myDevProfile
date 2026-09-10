@@ -73,8 +73,8 @@ const projects = [
 
 const certifications = [
   {
-    title: "Ai Agent Fundamentals",
-    issuer: "Databricks",
+    title: "Code Claude In Action",
+    issuer: "Anthropic Academy",
     date: "",
     link: "",
   },
@@ -84,6 +84,12 @@ const certifications = [
     date: "",
     link: "",
   },
+  {
+    title: "AI/ML Foundations",
+    issuer: "AWS Educate",
+    date: "",
+    link: "",
+  }
 ];
 
 function App() {
