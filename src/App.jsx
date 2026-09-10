@@ -62,12 +62,12 @@ const projects = [
   {
     title: "Full Stack Profile Website",
     description: "Developed a personal portfolio website showcasing Skills set and projects",
-    tech: ["Spring Boot", "React", "MySQL(AWS RDS)", "Deployment(AWS EC2)"],
+    tech: ["Spring Boot", "React.js", "MySQL(AWS RDS)", "Deployment(AWS EC2)"],
   },
   {
     title: "Real-Time Analytics Platform",
-    description: "Built a real-time data processing system using Java and Apache Kafka for instant business insights",
-    tech: ["Java", "Kafka", "Spring Boot", "MySQL"],
+    description: "Built a real-time data processing system using Java and Apache spark & Kafka for instant business insights",
+    tech: ["Java", "Apache Spark", "Apache Kafka", "SQL"],
   },
 ];
 
@@ -235,11 +235,11 @@ function App() {
               </p>
               <div className="hero-stats">
                 <div className="stat">
-                  <span className="stat-number">2+</span>
+                  <span className="stat-number">3+</span>
                   <span className="stat-label">Years Experience</span>
                 </div>
                 <div className="stat">
-                  <span className="stat-number">15+</span>
+                  <span className="stat-number">10+</span>
                   <span className="stat-label">Technologies</span>
                 </div>
               </div>
